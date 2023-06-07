@@ -72,8 +72,10 @@ class _LoginViewState extends State<LoginView> {
                   email: email,
                   password: password,
                 );
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  notesRoute,
+                  (route) => false,
+                );
                 devtools.log(userCredential.toString());
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
@@ -103,8 +105,10 @@ class _LoginViewState extends State<LoginView> {
           ),
           TextButton(
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(registerRoute, (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  registerRoute,
+                  (route) => false,
+                );
               },
               child: const Text('Not registered yet ? Register Here!'))
         ],
