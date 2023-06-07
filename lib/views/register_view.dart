@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
 
 // import '../firebase_options.dart';
 
@@ -63,23 +64,23 @@ class _RegisterViewState extends State<RegisterView> {
                 final userCredential = await FirebaseAuth.instance
                     .createUserWithEmailAndPassword(
                         email: email, password: password);
-                print(userCredential);
+                devtools.log(userCredential.toString());
               } on FirebaseAuthException catch (e) {
                 if (email.isEmpty && password.isEmpty) {
-                  print("Enter email and password");
+                  devtools.log("Enter email and password");
                 } else if (email.isEmpty) {
-                  print("Enter email");
+                  devtools.log("Enter email");
                 } else if (password.isEmpty) {
-                  print("Enter password");
+                  devtools.log("Enter password");
                 } else if (e.code == 'weak-password') {
-                  print('Weak Password');
+                  devtools.log('Weak Password');
                 } else if (e.code == 'email-already-in-use') {
-                  print("Email Already In Use");
+                  devtools.log("Email Already In Use");
                 } else if (e.code == 'invalid-email') {
-                  print("Invalid Email Entered");
+                  devtools.log("Invalid Email Entered");
                 } else {
-                  print(e.toString());
-                  print(e.stackTrace);
+                  devtools.log(e.toString());
+                  devtools.log(e.stackTrace.toString());
                 }
               }
             },
