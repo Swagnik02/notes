@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/routes.dart';
+
+import 'package:notes/enums/menu_action.dart';
 // import 'dart:developer' as devtools show log;
 
 // import 'package:notes/views/login_view.dart';
-
-enum MenuAction { logout }
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/routes.dart';
+import 'package:notes/enums/menu_action.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -8,9 +9,6 @@ class VerifyEmailView extends StatefulWidget {
   @override
   State<VerifyEmailView> createState() => _VerifyEmailViewState();
 }
-
-//logout
-enum MenuAction { logout }
 
 class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
