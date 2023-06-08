@@ -1,13 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
-
 import 'package:notes/constants/routes.dart';
-
+import 'package:notes/services/auth/auth_exceptions.dart';
+import 'package:notes/services/auth/auth_service.dart';
 import '../utilities/show_error_dialogue.dart';
-
-// import '../firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -65,55 +61,47 @@ class _RegisterViewState extends State<RegisterView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredential =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                AuthService.firebase().createUser(
                   email: email,
                   password: password,
                 );
-                devtools.log(userCredential.toString());
-                final user = FirebaseAuth.instance.currentUser;
-                await user?.sendEmailVerification();
+                AuthService.firebase().sendEmailVerification();
                 Navigator.of(context).pushNamed(verifyEmailRoute);
-              } on FirebaseAuthException catch (e) {
-                if (email.isEmpty && password.isEmpty) {
-                  await showErrorDialogue(
-                    context,
-                    'Enter email and password',
-                  );
-                } else if (email.isEmpty) {
-                  await showErrorDialogue(
-                    context,
-                    'Enter email',
-                  );
-                } else if (password.isEmpty) {
-                  await showErrorDialogue(
-                    context,
-                    'Enter password',
-                  );
-                } else if (e.code == 'weak-password') {
-                  await showErrorDialogue(
-                    context,
-                    'Weak Password',
-                  );
-                } else if (e.code == 'email-already-in-use') {
-                  await showErrorDialogue(
-                    context,
-                    'Email Already In Use',
-                  );
-                } else if (e.code == 'invalid-email') {
-                  await showErrorDialogue(
-                    context,
-                    'Invalid Email Entered',
-                  );
-                } else {
-                  await showErrorDialogue(
-                    context,
-                    'Error: ${e.code}',
-                  );
-                  devtools.log(e.stackTrace.toString());
-                }
-              } catch (e) {
-                await showErrorDialogue(context, e.toString());
+              } on EmptyEmailAndPasswordAuthException {
+                await showErrorDialogue(
+                  context,
+                  'Enter email and password',
+                );
+              } on EmptyEmailAuthException {
+                await showErrorDialogue(
+                  context,
+                  'Enter email',
+                );
+              } on EmptyPasswordAuthException {
+                await showErrorDialogue(
+                  context,
+                  'Enter password',
+                );
+              } on WeakPasswordAuthException {
+                await showErrorDialogue(
+                  context,
+                  'Weak Password',
+                );
+              } on EmailAlreadyInUseAuthException {
+                await showErrorDialogue(
+                  context,
+                  'Email Already In Use',
+                );
+              } on InvalidEmailAuthException {
+                await showErrorDialogue(
+                  context,
+                  'Invalid Email Entered',
+                );
+              } on GenericAuthException {
+                await showErrorDialogue(
+                  context,
+                  'Failed to register !!',
+                );
               }
             },
             child: const Text('Register'),
