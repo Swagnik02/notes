@@ -5,19 +5,9 @@ import 'package:notes/constants/routes.dart';
 import 'package:notes/views/login_view.dart';
 import 'package:notes/views/notes_view.dart';
 import 'package:notes/views/register_view.dart';
-// import 'package:notes/constants/';
 import 'package:notes/views/verify_email_view.dart';
 
-//Firebase
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'firebase_options.dart';
-
-//views
-// import 'package:notes/views/login_view.dart';
-
 import 'firebase_options.dart';
-// import 'package:notes/views/register_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
