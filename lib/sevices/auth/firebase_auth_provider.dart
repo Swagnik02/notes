@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:notes/sevices/auth/auth_exceptions.dart';
 import 'package:notes/sevices/auth/auth_provider.dart';
 import 'package:notes/sevices/auth/auth_user.dart';
