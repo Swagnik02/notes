@@ -1,6 +1,7 @@
 import 'package:notes/sevices/auth/auth_exceptions.dart';
 import 'package:notes/sevices/auth/auth_provider.dart';
 import 'package:notes/sevices/auth/auth_user.dart';
+
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 
