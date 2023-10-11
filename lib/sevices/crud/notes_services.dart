@@ -136,7 +136,7 @@ class NoteService {
     );
 
     if (deletedCount != 0) {
-      throw CouldNotDeletNote();
+      throw CouldNotDeleteNote();
     }
   }
 
