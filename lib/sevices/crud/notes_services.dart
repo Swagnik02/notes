@@ -91,6 +91,9 @@ class NoteService {
       email: email,
     );
   }
+
+  //clean
+  //spaces
 }
 
 @immutable
