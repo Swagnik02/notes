@@ -10,6 +10,7 @@ const dbName = 'notes.db';
 class NoteService {
   Database? _db;
 
+  // user Manipulation
   Database _getDatabaseOrThrow() {
     final db = _db;
     if (db == null) {
