@@ -173,23 +173,19 @@ class NoteService {
     required String text,
   }) async {
     final db = _getDatabaseOrThrow();
-    final updatesCount = await getNote(id: note.id);
-    db.update(noteTable, {
+
+    await getNote(id: note.id);
+
+    final updatesCount = await db.update(noteTable, {
       textColumn: text,
       isSyncedWithCloudColumn: 0,
     });
 
-    if (updatesCount.toString() == "0") {
+    if (updatesCount == 0) {
       throw CouldNotUpdateNote();
     } else {
       return await getNote(id: note.id);
     }
-    // actual code shown in the tutorial video time: around 19:20:00
-    // if (updatesCount == 0) {
-    //   throw CouldNotUpdateNote();
-    // } else {
-    //   return await getNote(id: note.id);
-    // }
   }
 }
 
