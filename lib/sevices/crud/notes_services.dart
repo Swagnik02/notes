@@ -5,6 +5,8 @@ import 'package:path/path.dart' show join;
 
 class DatabaseAlreadyOpenException implements Exception {}
 
+class DatabaseIsNotOpen implements Exception {}
+
 class UnableToGetDoccumentsDirectory implements Exception {}
 
 // constants
@@ -23,14 +25,22 @@ class NoteService {
       final dbPath = join(docsPath.path, dbName);
       final db = await openDatabase(dbPath);
       _db = db;
-
       // CREATE USER TABLE
       await db.execute(createUserTable);
-
       // CREATE NOTE TABLE
       await db.execute(createNoteTable);
     } on MissingPlatformDirectoryException {
       throw UnableToGetDoccumentsDirectory();
+    }
+  }
+
+  Future<void> close() async {
+    final db = _db;
+    if (db == null) {
+      throw DatabaseIsNotOpen();
+    } else {
+      await db.close();
+      _db = null;
     }
   }
 }
