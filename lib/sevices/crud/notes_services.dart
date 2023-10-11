@@ -11,6 +11,8 @@ class UnableToGetDoccumentsDirectory implements Exception {}
 
 class CouldNotDeleteUser implements Exception {}
 
+class UserAlreadyExists implements Exception {}
+
 // constants
 const dbName = 'notes.db';
 
@@ -55,7 +57,7 @@ class NoteService {
     }
   }
 
-  Future<void> deleteuser({required String email}) async {
+  Future<void> deleteUser({required String email}) async {
     final db = _getDatabaseOrThrow();
     final deletedCount = await db.delete(
       userTable,
@@ -66,6 +68,28 @@ class NoteService {
     if (deletedCount != 1) {
       throw CouldNotDeleteUser();
     }
+  }
+
+  Future<DatabaseUser> createUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+    final results = await db.query(
+      userTable,
+      limit: 1,
+      where: 'email == ?',
+      whereArgs: [email.toLowerCase()],
+    );
+
+    if (results.isNotEmpty) {
+      throw UserAlreadyExists();
+    }
+    final userId = await db.insert(userTable, {
+      emailColumn: email.toUpperCase(),
+    });
+
+    return DatabaseUser(
+      id: userId,
+      email: email,
+    );
   }
 }
 
