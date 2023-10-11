@@ -142,10 +142,19 @@ class NoteService {
   Future<void> deleteNote({required int id}) async {
     final db = _getDatabaseOrThrow();
     final deletedCount = await db.delete(
-      userTable,
+      noteTable,
       where: 'id = ?',
       whereArgs: [id],
     );
+
+    if (deletedCount != 0) {
+      throw CouldNotDeletNote();
+    }
+  }
+
+  Future<void> deleteAllNote({required int id}) async {
+    final db = _getDatabaseOrThrow();
+    final deletedCount = await db.delete(noteTable);
 
     if (deletedCount != 0) {
       throw CouldNotDeletNote();
