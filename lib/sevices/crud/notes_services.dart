@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:notes/sevices/crud/crud_exceptions.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
-
-class DatabaseAlreadyOpenException implements Exception {}
-
-class DatabaseIsNotOpen implements Exception {}
-
-class UnableToGetDoccumentsDirectory implements Exception {}
-
-class CouldNotDeleteUser implements Exception {}
-
-class UserAlreadyExists implements Exception {}
-
-class CouldNotFindUser implements Exception {}
-
-class CouldNotDeletNote implements Exception {}
-
-class CouldNotFindNote implements Exception {}
-
-class CouldNotUpdateNote implements Exception {}
 
 // constants
 const dbName = 'notes.db';
