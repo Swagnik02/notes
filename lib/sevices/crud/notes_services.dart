@@ -9,8 +9,10 @@ class DatabaseIsNotOpen implements Exception {}
 
 class UnableToGetDoccumentsDirectory implements Exception {}
 
+class CouldNotDeleteUser implements Exception {}
+
 // constants
-const dbName = 'motes.db';
+const dbName = 'notes.db';
 
 class NoteService {
   Database? _db;
@@ -50,6 +52,19 @@ class NoteService {
     } else {
       await db.close();
       _db = null;
+    }
+  }
+
+  Future<void> deleteuser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+    final deletedCount = await db.delete(
+      userTable,
+      where: 'email = ?',
+      whereArgs: [email.toLowerCase()],
+    );
+
+    if (deletedCount != 1) {
+      throw CouldNotDeleteUser();
     }
   }
 }
