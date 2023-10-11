@@ -19,6 +19,8 @@ class CouldNotDeletNote implements Exception {}
 
 class CouldNotFindNote implements Exception {}
 
+class CouldNotUpdateNote implements Exception {}
+
 // constants
 const dbName = 'notes.db';
 
@@ -182,8 +184,23 @@ class NoteService {
     return notes.map((noteRow) => DatabaseNote.fromRow(noteRow));
   }
 
-  //clean
-  //spaces
+  Future<DatabaseNote> updateNote({
+    required DatabaseNote note,
+    required String text,
+  }) async {
+    final db = _getDatabaseOrThrow();
+    final updatesCount = await getNote(id: note.id);
+    db.update(noteTable, {
+      textColumn: text,
+      isSyncedWithCloudColumn: 0,
+    });
+
+    if (updatesCount.toString() == "0") {
+      throw CouldNotUpdateNote();
+    } else {
+      return await getNote(id: note.id);
+    }
+  }
 }
 
 @immutable
