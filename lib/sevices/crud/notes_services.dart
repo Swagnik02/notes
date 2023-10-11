@@ -13,6 +13,8 @@ class CouldNotDeleteUser implements Exception {}
 
 class UserAlreadyExists implements Exception {}
 
+class CouldNotFindUser implements Exception {}
+
 // constants
 const dbName = 'notes.db';
 
@@ -90,6 +92,22 @@ class NoteService {
       id: userId,
       email: email,
     );
+  }
+
+  Future<DatabaseUser> getUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+    final results = await db.query(
+      userTable,
+      limit: 1,
+      where: 'email == ?',
+      whereArgs: [email.toLowerCase()],
+    );
+
+    if (results.isEmpty) {
+      throw CouldNotFindUser();
+    } else {
+      return DatabaseUser.fromRow(results.first);
+    }
   }
 
   //clean
