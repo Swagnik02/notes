@@ -1,11 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart'
-    show getApplicationDocumentsDirectory;
+import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
+
+class DatabaseAlreadyOpenException implements Exception {}
+
+class UnableToGetDoccumentsDirectory implements Exception {}
 
 // constants
 const dbName = 'motes.db';
+
+class NoteService {
+  Database? _db;
+
+  Future<void> open() async {
+    if (_db != null) {
+      throw DatabaseAlreadyOpenException();
+    }
+
+    try {
+      final docsPath = await getApplicationDocumentsDirectory();
+      final dbPath = join(docsPath.path, dbName);
+      final db = await openDatabase(dbPath);
+      _db = db;
+    } on MissingPlatformDirectoryException {
+      throw UnableToGetDoccumentsDirectory();
+    }
+  }
+}
 
 // constants
 const noteTable = 'note';
