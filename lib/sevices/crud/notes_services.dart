@@ -175,6 +175,13 @@ class NoteService {
     }
   }
 
+  Future<Iterable<DatabaseNote>> getAllNote() async {
+    final db = _getDatabaseOrThrow();
+    final notes = await db.query(noteTable);
+
+    return notes.map((noteRow) => DatabaseNote.fromRow(noteRow));
+  }
+
   //clean
   //spaces
 }
