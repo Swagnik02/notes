@@ -15,6 +15,8 @@ class UserAlreadyExists implements Exception {}
 
 class CouldNotFindUser implements Exception {}
 
+class CouldNotDeletNote implements Exception {}
+
 // constants
 const dbName = 'notes.db';
 
@@ -107,6 +109,46 @@ class NoteService {
       throw CouldNotFindUser();
     } else {
       return DatabaseUser.fromRow(results.first);
+    }
+  }
+
+  // notes Manipulation
+  Future<DatabaseNote> createNote({required DatabaseUser owner}) async {
+    final db = _getDatabaseOrThrow();
+
+    // make sure owner exists in the db with the correct id
+    final dbUser = await getUser(email: owner.email);
+    if (dbUser != owner) {
+      throw CouldNotFindUser();
+    }
+
+    const text = '';
+    // create the note
+    final noteId = await db.insert(noteTable, {
+      userIdColumn: owner.id,
+      textColumn: text,
+      isSyncedWithCloudColumn: 1,
+    });
+
+    final note = DatabaseNote(
+      id: noteId,
+      userId: owner.id,
+      text: text,
+      isSyncedWithCloud: true,
+    );
+    return note;
+  }
+
+  Future<void> deleteNote({required int id}) async {
+    final db = _getDatabaseOrThrow();
+    final deletedCount = await db.delete(
+      userTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (deletedCount != 0) {
+      throw CouldNotDeletNote();
     }
   }
 
