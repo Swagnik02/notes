@@ -15,6 +15,15 @@ const dbName = 'motes.db';
 class NoteService {
   Database? _db;
 
+  Database _getDatabaseOrThrow() {
+    final db = _db;
+    if (db == null) {
+      throw DatabaseIsNotOpen();
+    } else {
+      return db;
+    }
+  }
+
   Future<void> open() async {
     if (_db != null) {
       throw DatabaseAlreadyOpenException();
