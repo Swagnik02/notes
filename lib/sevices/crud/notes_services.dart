@@ -184,6 +184,12 @@ class NoteService {
     } else {
       return await getNote(id: note.id);
     }
+    // actual code shown in the tutorial video time: around 19:20:00
+    // if (updatesCount == 0) {
+    //   throw CouldNotUpdateNote();
+    // } else {
+    //   return await getNote(id: note.id);
+    // }
   }
 }
 
